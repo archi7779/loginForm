@@ -1,4 +1,4 @@
 login form(formik) with validations on client and server(node.js)
 
-gh pages: https://github.com/archi7779/loginForm
+gh pages: https://archi7779.github.io/loginForm/
 server is off, but if its on everythink works properly
