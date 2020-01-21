@@ -22,11 +22,13 @@ const validationSchema = yup.object({
     .moreThan(18)
     .lessThan(65)
     .required(),
-  password: yup.string().required('Please Enter your password'),
-  // .matches(
-  //     "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
-  //     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-  // )
+  password: yup
+    .string()
+    .required('Please Enter your password')
+    .matches(
+      '^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$',
+      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+    ),
   repeatPassword: yup
     .string()
     .required()
@@ -148,7 +150,7 @@ export default class LoginForm extends React.Component {
                         type="input"
                         as={Input}
                         placeholder="enter ur skill"
-                        key={0}
+                        key={`${values.skills.length}`}
                       />
                       {values.skills.slice(1).map((item, index) => (
                         <Field
@@ -156,10 +158,11 @@ export default class LoginForm extends React.Component {
                           type="input"
                           as={Input}
                           placeholder="enter ur skill"
-                          key={_.uniqueId()}
+                          /* eslint-disable-next-line react/no-array-index-key */
+                          key={index}
                         />
                       ))}
-                      <button type="button" onClick={() => arrayHelpers.push()}>
+                      <button type="button" onClick={() => values.skills[0] && arrayHelpers.push()}>
                         Add Skill
                       </button>
                     </div>
