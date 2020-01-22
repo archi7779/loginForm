@@ -35,9 +35,9 @@ const validationSchema = yup.object({
   password: yup
     .string()
     .required('Please Enter your password')
-    .matches('^([A-Z0-9]+)([a-z]*]$', 'Must Contain 8-40 Characters, One Uppercase, , One Number')
-    .matches('^[a-zA-Z0-9]{8,40}$', 'Must Contain 8-40 Characters, One Uppercase, , One Number'),
-
+    .matches('([0-9]+)([a-z]*)', 'Must Contain at least  One Number')
+    .matches('([A-Z]+)([0-9]*)', 'Must Contain at least  One Uppercase ')
+    .matches('[a-zA-Z0-9]{8,40}', 'Must Contain 8-40 Characters, One Uppercase, One Number'),
   repeatPassword: yup
     .string()
     .required()
