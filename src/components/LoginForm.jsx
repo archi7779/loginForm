@@ -1,10 +1,20 @@
 import React from 'react';
-import { Field, Form, Formik, FieldArray } from 'formik';
-import { Input } from 'antd';
+import { Field, Form, Formik, FieldArray, useField } from 'formik';
+import { Input, Button } from 'antd';
 import * as yup from 'yup';
 import classNames from 'classnames';
 import axios from 'axios';
 import * as _ from 'lodash';
+
+function MyInput(props) {
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <Input {...field} {...props} />
+      {meta.error && meta.touched && <div>{meta.error}</div>}
+    </>
+  );
+}
 
 const validationSchema = yup.object({
   acceptTerms: yup.boolean().oneOf([true], 'Must Accept Terms and Conditions'),
@@ -26,8 +36,8 @@ const validationSchema = yup.object({
     .string()
     .required('Please Enter your password')
     .matches(
-      '^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$',
-      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+      '^(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,40}$',
+      'Must Contain 8-40 Characters, One Uppercase, , One Number'
     ),
   repeatPassword: yup
     .string()
@@ -61,7 +71,7 @@ export default class LoginForm extends React.Component {
             acceptTerms: false,
           }}
           validationSchema={validationSchema}
-          onSubmit={(data, { setSubmitting }) => {
+          onSubmit={(data, { setSubmitting, resetForm }) => {
             setSubmitting(true);
             const skills = _.compact(data.skills);
             const dataToSend = { ...data, skills };
@@ -77,7 +87,7 @@ export default class LoginForm extends React.Component {
                   data: dataToSend,
                 });
                 this.setState({ res: response });
-                // resetForm() kak sdelat'?
+                resetForm();
               } catch (err) {
                 this.setState({ error: err });
               }
@@ -91,80 +101,62 @@ export default class LoginForm extends React.Component {
               {res && <div>{res.data}</div>}
               {error && <div className="errorMessage">{error.message}</div>}
               <Form className="loginForm">
-                <Field
+                <MyInput
                   name="name"
-                  type="input"
-                  as={Input}
                   placeholder="enter ur name"
-                  className={classNames({ inputError: errors.name })}
+                  className={classNames({ inputError: errors.name && touched.name })}
                 />
-                {errors.name && touched.name ? <div>{errors.name}</div> : null}
-                <Field
-                  name="password"
-                  type="password"
-                  as={Input}
-                  placeholder="enter ur password"
-                  className={classNames({ inputError: errors.password })}
-                />
-                {errors.password && touched.password ? <div>{errors.password}</div> : null}
-                <Field
-                  name="repeatPassword"
-                  type="password"
-                  as={Input}
-                  placeholder="repeat ur password"
-                  className={classNames({ inputError: errors.repeatPassword })}
-                />
-                {errors.repeatPassword && touched.repeatPassword ? (
-                  <div>{errors.repeatPassword}</div>
-                ) : null}
-                <Field
-                  name="email"
-                  type="input"
-                  as={Input}
-                  placeholder="enter ur email"
-                  className={classNames({ inputError: errors.email })}
-                />
-                {errors.email && touched.email ? <div>{errors.email}</div> : null}
 
-                <Field
+                <MyInput
+                  name="password"
+                  placeholder="enter ur password"
+                  className={classNames({ inputError: errors.password && touched.password })}
+                />
+
+                <MyInput
+                  name="repeatPassword"
+                  placeholder="repeat ur password"
+                  className={classNames({
+                    inputError: errors.repeatPassword && touched.repeatPassword,
+                  })}
+                />
+
+                <MyInput
+                  name="email"
+                  placeholder="enter ur email"
+                  className={classNames({ inputError: errors.email && touched.email })}
+                />
+
+                <MyInput
                   name="website"
-                  type="input"
-                  as={Input}
                   placeholder="enter ur website"
-                  className={classNames({ inputError: errors.website })}
+                  className={classNames({ inputError: errors.website && touched.website })}
                 />
-                {errors.website && touched.website ? <div>{errors.website}</div> : null}
-                <Field
+
+                <MyInput
                   name="age"
-                  type="input"
-                  as={Input}
                   placeholder="enter ur age"
-                  className={classNames({ inputError: errors.age })}
+                  className={classNames({ inputError: errors.age && touched.age })}
                 />
-                {errors.age && touched.age ? <div>{errors.age}</div> : null}
+
                 <FieldArray name="skills">
                   {arrayHelpers => (
                     <div className="fieldArr">
-                      <Field
-                        name="skills[0]"
-                        type="input"
-                        as={Input}
-                        placeholder="enter ur skill"
-                        key={`${values.skills.length}`}
-                      />
+                      <MyInput name="skills[0]" placeholder="enter ur skill" key={0} />
                       {values.skills.slice(1).map((item, index) => (
-                        <Field
+                        <MyInput
                           name={`skills[${index + 1}]`}
-                          type="input"
-                          as={Input}
                           placeholder="enter ur skill"
                           /* eslint-disable-next-line react/no-array-index-key */
                           key={index}
                         />
                       ))}
-                      <button type="button" onClick={() => values.skills[0] && arrayHelpers.push()}>
+                      <Button
+                        type="primary"
+                        onClick={() => values.skills[0] && arrayHelpers.push()}
+                      >
                         Add Skill
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </FieldArray>
@@ -178,7 +170,9 @@ export default class LoginForm extends React.Component {
                   Accept Terms{' '}
                 </label>
                 {errors.acceptTerms ? <div>{errors.acceptTerms}</div> : null}
-                <button type="submit">sub</button>
+                <Button type="primary" htmlType="submit">
+                  sub
+                </Button>
               </Form>
             </>
           )}

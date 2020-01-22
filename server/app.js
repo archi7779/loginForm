@@ -13,11 +13,7 @@ const corsOptions = {
 };
 
 app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+
 
 app.options('/sign-up', cors(corsOptions));
 
@@ -26,7 +22,7 @@ app.post('/sign-up', cors(corsOptions), (request, response) => {
     loginData.push(request.body);
     response.send('we registred you successfully');
   } else {
-    response.send('email is alredy taken');
+    response.status(400).send('email is alredy taken');
   }
 });
 
