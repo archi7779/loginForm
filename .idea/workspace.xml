@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="675fd48e-5250-46ad-822c-e64cf04529cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/MyInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LoginForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +85,7 @@
       <workItem from="1578562366381" duration="3613000" />
       <workItem from="1579092823790" duration="1887000" />
       <workItem from="1579593080083" duration="1992000" />
-      <workItem from="1579617705901" duration="8148000" />
+      <workItem from="1579617705901" duration="9082000" />
     </task>
     <servers />
   </component>
